@@ -13,6 +13,7 @@ class BlackjackGUI:
         self.bet = 100     # Initial bet
         self.game_over = False
         self.bet_locked = False  # Indicates whether the bet is locked
+        self.coach_mode = tk.BooleanVar(value=False)  # Coach Mode toggle
 
         # Load card images
         self.card_images = self.load_card_images()
@@ -58,7 +59,7 @@ class BlackjackGUI:
         self.player_value_label = tk.Label(self.root, text="Player's Value: ?", font=("Arial", 12))
         self.player_value_label.pack()
 
-        # Chips Display with Image
+        # Chips Display
         self.chips_frame = tk.Frame(self.root)
         self.chips_frame.pack(pady=10)
         self.chip_image_label = tk.Label(self.chips_frame, image=self.card_images["chip"])
@@ -90,6 +91,29 @@ class BlackjackGUI:
         self.stand_button.pack(side="left", padx=10)
         self.reset_button = tk.Button(self.controls_frame, text="Reset Game", command=self.reset_game)
         self.reset_button.pack(side="left", padx=10)
+
+        # Coach Mode Checkbox
+        self.coach_mode_checkbox = tk.Checkbutton(
+            self.root, text="Coach Mode", variable=self.coach_mode, command=self.update_ui
+        )
+        self.coach_mode_checkbox.pack(pady=10)
+
+        # True Count and Win Probability Display
+        self.coach_frame = tk.Frame(self.root)
+        self.coach_frame.pack(pady=10)
+        self.true_count_label = tk.Label(self.coach_frame, text="True Count: ?", font=("Arial", 12))
+        self.true_count_label.pack()
+        self.win_probability_label = tk.Label(self.coach_frame, text="Win Probability: ?", font=("Arial", 12))
+        self.win_probability_label.pack()
+
+        # Cheat Sheet (Initially Hidden)
+        self.cheat_sheet_frame = tk.LabelFrame(self.root, text="Betting Advice", font=("Arial", 12), padx=10, pady=10)
+        self.cheat_sheet_label = tk.Label(
+            self.cheat_sheet_frame,
+            text="Betting Strategy:\n\n- True Count < 1: Bet Minimum\n- True Count 1-3: Moderate Bet\n- True Count ≥ 3: Bet High",
+            font=("Arial", 12), justify=tk.LEFT
+        )
+        self.cheat_sheet_label.pack()
 
     def decrease_bet(self):
         """Decrease the bet amount."""
@@ -178,6 +202,14 @@ class BlackjackGUI:
         self.update_ui()
         self.reset_controls()
 
+    def calculate_win_probability(self):
+        """Calculate win probability based on the True Count."""
+        base_probability = 50  # Default win probability at True Count 0
+        true_count = self.game.true_count
+        win_probability = base_probability + (true_count * 5)
+        win_probability = max(0, min(win_probability, 100))  # Clamp between 0% and 100%
+        return win_probability
+
     def update_ui(self, reveal_dealer=False):
         """Update the GUI with the current game state."""
         # Clear canvases
@@ -208,6 +240,21 @@ class BlackjackGUI:
         # Update chips and bet
         self.chips_label.config(text=f"{self.chips}")
         self.bet_label.config(text=f"{self.bet}")
+
+        # Update Coach Mode
+        if self.coach_mode.get():
+            self.true_count_label.config(text=f"True Count: {self.game.true_count:.2f}")
+            win_probability = self.calculate_win_probability()
+            self.win_probability_label.config(text=f"Win Probability: {win_probability:.2f}%")
+
+            # Show Cheat Sheet
+            self.cheat_sheet_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        else:
+            self.true_count_label.config(text="True Count: ?")
+            self.win_probability_label.config(text="Win Probability: ?")
+
+            # Hide Cheat Sheet
+            self.cheat_sheet_frame.pack_forget()
 
 if __name__ == "__main__":
     BlackjackGUI()
