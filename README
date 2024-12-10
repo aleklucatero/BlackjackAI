@@ -1,0 +1,93 @@
+
+# Blackjack AI
+
+A Python-based AI-driven Blackjack simulator and tutor that allows users to practice blackjack strategies, including card counting using the Hi-Lo system, and improve their betting decisions with a GUI interface.
+
+---
+
+## **Project Structure**
+
+### **Files and Folders**
+
+#### 1. **`game_logic.py`**
+- **Purpose:** Contains the core game logic for Blackjack.
+- **Key Features:**
+  - **Deck Management:** Functions for creating, shuffling, and resetting the deck.
+  - **Card Dealing:** Logic to deal cards to the player and dealer.
+  - **Hand Value Calculation:** Calculates the total value of a hand with Ace adjustment.
+  - **Card Counting:** Implements the Hi-Lo system to maintain the running and true counts.
+  - **Simulation Functions:** Simulates game outcomes for various player actions (`hit`, `stand`) to calculate win probabilities.
+
+#### 2. **`gui.py`**
+- **Purpose:** Implements the graphical user interface for the game using Tkinter.
+- **Key Features:**
+  - **Player Interaction:** Buttons for `Hit`, `Stand`, `Deal`, and `Reset`.
+  - **Betting System:** Allows the user to adjust bets and displays chip count.
+  - **Coach Mode:** Displays the true count, win probabilities, and betting advice when enabled.
+  - **Dynamic Cheat Sheet:** Advises the user on betting strategy based on the true count.
+
+#### 3. **`main.py`**
+- **Purpose:** A simple command-line interface for testing the core logic in `game_logic.py`.
+- **Key Features:**
+  - Instantiates the `BlackjackGame` class.
+  - Deals cards to the player and dealer.
+  - Prints the hands, values, running count, and true count.
+
+#### 4. **`assets` Folder**
+- **Purpose:** Contains images used for the graphical user interface.
+- **Files:**
+  - Card images named as `<rank>_of_<suit>.png` (e.g., `ace_of_hearts.png`).
+  - A card back image (`blue.png`).
+  - A chip image (`chip.png`) for displaying the chip count in the GUI.
+
+---
+
+## **How to Run the Project**
+
+### Prerequisites
+- Python 3.x
+- Required libraries: `tkinter`, `Pillow`
+
+### Steps
+1. **Clone the Project**:
+   - Ensure the `game_logic.py`, `gui.py`, `main.py`, and the `assets` folder are in the same directory.
+2. **Run the GUI**:
+   - Open a terminal or command prompt.
+   - Navigate to the project directory.
+   - Execute: `python gui.py`
+3. **Run the Command-Line Version**:
+   - Execute: `python main.py` to test the game logic without the GUI.
+
+---
+
+## **How the Code Works**
+
+### **Core Game Mechanics**
+- The `BlackjackGame` class in `game_logic.py`:
+  - Manages deck creation and shuffling.
+  - Tracks the running and true counts using the Hi-Lo card counting system.
+  - Calculates hand values, considering Ace adjustments.
+
+### **Graphical User Interface**
+- The `BlackjackGUI` class in `gui.py`:
+  - Provides an interactive experience with buttons and live game updates.
+  - Displays card images, chip count, and player options.
+  - Includes a `Coach Mode` with a cheat sheet and dynamic probability calculations.
+
+---
+
+## **Coach Mode**
+- **Purpose:** Helps players understand advanced strategies.
+- **Features:**
+  - Displays the **True Count**, indicating card favorability.
+  - Calculates the **win probability** based on the current game state.
+  - Shows a **Cheat Sheet** with betting advice depending on the true count.
+
+---
+
+## **Future Enhancements**
+- Implement reinforcement learning for more sophisticated AI decision-making.
+- Add multiplayer mode.
+- Extend the GUI with animations and sound effects.
+
+---
